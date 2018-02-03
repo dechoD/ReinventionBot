@@ -51,7 +51,7 @@ namespace Microsoft.Bot.Sample.ProactiveBot
 
         private async Task HandleMessage(Activity activity)
         {
-            await Conversation.SendAsync(activity, () => new GreetDialog());
+            await Conversation.SendAsync(activity, () => new ProactiveDialog());
         }
 
         private async Task HandleEvent(Activity activity)

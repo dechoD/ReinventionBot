@@ -48,14 +48,14 @@ namespace Microsoft.Bot.Sample.ProactiveBot.Dialogs
             await connector.Conversations.SendToConversationAsync((Activity)message);
 
             // Create a queue Message
-            //var queueMessage = new Message
-            //{
-            //    RelatesTo = context.Activity.ToConversationReference(),
-            //    Text = message.Text
-            //};
+            var queueMessage = new Message
+            {
+                RelatesTo = context.Activity.ToConversationReference(),
+                Text = message.Text
+            };
 
             // write the queue Message to the queue
-            //await AddMessageToQueueAsync(JsonConvert.SerializeObject(queueMessage), context);
+            await AddMessageToQueueAsync(JsonConvert.SerializeObject(queueMessage), context);
 
             await context.PostAsync(JsonConvert.SerializeObject(context.Activity));
 
