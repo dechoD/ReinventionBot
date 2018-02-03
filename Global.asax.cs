@@ -17,6 +17,7 @@ namespace SimpleEchoBot
             // We provide adapters for Azure Table, CosmosDb, SQL Azure, or you can implement your own!
             // For samples and documentation, see: https://github.com/Microsoft/BotBuilder-Azure
 
+#if !DEBUG
             Conversation.UpdateContainer(
                 builder =>
                 {
@@ -36,6 +37,7 @@ namespace SimpleEchoBot
 
                 });
             GlobalConfiguration.Configure(WebApiConfig.Register);
+#endif
         }
     }
 }

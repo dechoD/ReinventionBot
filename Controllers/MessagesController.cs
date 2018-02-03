@@ -10,6 +10,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector.Teams.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.Bot.Sample.ProactiveBot.Dialogs;
 
 namespace Microsoft.Bot.Sample.ProactiveBot
 {
@@ -23,8 +24,14 @@ namespace Microsoft.Bot.Sample.ProactiveBot
         [ResponseType(typeof(void))]
         public virtual async Task<IHttpActionResult> Post([FromBody] Activity activity)
         {
-            var channelData = activity.GetChannelData<TeamsChannelData>();
-            var tenantId = channelData.Tenant.Id;
+            try
+            {
+                var channelData = activity.GetChannelData<TeamsChannelData>();
+                var tenantId = channelData.Tenant.Id;
+            }
+            catch (Exception)
+            {
+            }            
 
             if (activity.GetActivityType() == ActivityTypes.Message)
             {
@@ -44,7 +51,7 @@ namespace Microsoft.Bot.Sample.ProactiveBot
 
         private async Task HandleMessage(Activity activity)
         {
-            await Conversation.SendAsync(activity, () => new ProactiveDialog());
+            await Conversation.SendAsync(activity, () => new GreetDialog());
         }
 
         private async Task HandleEvent(Activity activity)
@@ -92,6 +99,7 @@ namespace Microsoft.Bot.Sample.ProactiveBot
     public class Message
     {
         public ConversationReference RelatesTo { get; set; }
+
         public String Text { get; set; }
     }
 }
