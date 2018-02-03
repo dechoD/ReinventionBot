@@ -7,31 +7,34 @@
     using System.Threading.Tasks;
 
     [Serializable]
-    public class ConfirmationDialog : IDialog<string>
+    public class ConfirmationDialog : IDialog<bool>
     {
-        public Task StartAsync(IDialogContext context)
+        public async Task StartAsync(IDialogContext context)
         {
-            context.Wait(MessageReceivedAsync);
-            return Task.CompletedTask;
+            await context.PostAsync("Do you want me to remember you so I can send you notifications?");
+
+            context.Wait(this.MessageReceivedAsync);
         }
 
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
-            var activity = await result as Activity;
+            var message = await result;
 
-            if (activity.Text == "Yes")
+            if (message.Text == "Yes")
             {
-                context.Done("Yes");
+                context.Done(true);
             }
-            else if (activity.Text == "No")
+            else if (message.Text == "No")
             {
-                context.Done("No");
+                context.Done(false);
             }
+            else
+            {
+                await context.PostAsync("It's either Yes on No. I do not understand anything else.");
+                await context.PostAsync("Sooo, you want to receive notifications?");
 
-            // return our reply to the user
-            //await context.PostAsync(reply);
-
-            context.Wait(MessageReceivedAsync);
+                context.Wait(this.MessageReceivedAsync);
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ using Microsoft.Bot.Connector.Teams.Models;
 namespace Microsoft.Bot.Sample.ProactiveBot.Dialogs
 {
     [Serializable]
-    public class ProactiveDialog : IDialog<object>
+    public class ProactiveDialog1 : IDialog<object>
     {
         public async Task StartAsync(IDialogContext context)
         {
@@ -43,7 +43,7 @@ namespace Microsoft.Bot.Sample.ProactiveBot.Dialogs
             message.From = botAccount;
             message.Recipient = userAccount;
             message.Conversation = new ConversationAccount(id: "a:1FF_jJrHwxIBqzPMx4yLVjtoCVcD6o5Dkh7xqetx-rYDHSxmSmtPYMHsvC3W_qBkEVHVDOd9sewyfFYdYvGtW7kTKLQjUq7r3Cdhc5RcIqYGQbradXpl9i1mMAxPNroUD");
-            message.Text = "Hello, this is a notification";
+            message.Text = "Hello, this is a notification. With something else";
             message.Locale = "en-us";
             await connector.Conversations.SendToConversationAsync((Activity)message);
 

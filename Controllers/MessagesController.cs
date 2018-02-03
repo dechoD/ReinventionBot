@@ -24,15 +24,6 @@ namespace Microsoft.Bot.Sample.ProactiveBot
         [ResponseType(typeof(void))]
         public virtual async Task<IHttpActionResult> Post([FromBody] Activity activity)
         {
-            try
-            {
-                var channelData = activity.GetChannelData<TeamsChannelData>();
-                var tenantId = channelData.Tenant.Id;
-            }
-            catch (Exception)
-            {
-            }            
-
             if (activity.GetActivityType() == ActivityTypes.Message)
             {
                 await this.HandleMessage(activity);
@@ -51,7 +42,7 @@ namespace Microsoft.Bot.Sample.ProactiveBot
 
         private async Task HandleMessage(Activity activity)
         {
-            await Conversation.SendAsync(activity, () => new ProactiveDialog());
+            await Conversation.SendAsync(activity, () => new GreetDialog());
         }
 
         private async Task HandleEvent(Activity activity)
