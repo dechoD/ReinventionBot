@@ -54,10 +54,9 @@
                         user.Unsubscribed = false;
                         await AzureTableStorage.UpdateUser(user);
                         await context.PostAsync("You were unsubscribed, so before managing the notifications your subscription was renewed.");
-                    }
-                    
+                    }                    
 
-                    //context.Call(new ManageSubscriptionsDialog(), this.ResumeAfterManageSubscriptionsDialog);
+                    context.Call(new ManageSubscriptionsDialog(), this.ResumeAfterManageSubscriptionsDialog);
                 }
                 else if (message.Text == "unsubscribe")
                 {
@@ -72,7 +71,7 @@
                 }
                 else
                 {
-                    await context.PostAsync("It's either subscribe on unsubscribe. I do not understand anything else.");
+                    await context.PostAsync("It's either subscribe, unsubscribe or done. I do not understand anything else.");
                     await context.PostAsync("Sooo, you want to receive notifications?");
 
                     context.Wait(this.MessageReceivedAsync);

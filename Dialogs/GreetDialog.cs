@@ -43,7 +43,7 @@
             {
                 context.Call(new StatusDialog(), ResumeAferStatusDialog);
             }
-            else if (activity.Text == "sub")
+            else if (activity.Text == "subscribe")
             {
                 context.Call(new SubscriptionDialog(), ResumeAferSubscriptionDialog);
             }
