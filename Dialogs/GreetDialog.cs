@@ -1,5 +1,6 @@
 ﻿namespace Microsoft.Bot.Sample.ProactiveBot.Dialogs
 {
+    using global::ProactiveBot.Utilities;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
     using System;
@@ -12,12 +13,26 @@
     {
         public async Task StartAsync(IDialogContext context)
         {
-            // Greet the user
-            await context.PostAsync($"Hello {context.Activity.From.Name}. This is the first time we meet.");
-            await context.PostAsync($"My aim is to provide you some live information for the services you subscribe to.");
-            await context.PostAsync($"Type subscribe to start the subscription process.");
+            var userName = context.Activity.From.Name;
+            var userId = context.Activity.From.Id;
+            var userExists = await AzureTableStorage.UserExists(userId);
 
-            context.Wait(this.MessageReceivedAsync);
+            await context.PostAsync(userExists.ToString());
+
+            // Greet the user
+            if (userExists)
+            {
+                await context.PostAsync($"Hello again {userName}. Nice to see you again.");
+            }
+            else
+            {
+                await context.PostAsync($"Hello {context.Activity.From.Name}. This is the first time we meet.");
+                await context.PostAsync($"My aim is to provide you some live information for the services you subscribe to.");
+
+                await AzureTableStorage.InsertUser(context.Activity.From.Name, context.Activity.From.Id, context.Activity.Conversation.Id);
+            }            
+
+            context.Wait(MessageReceivedAsync);
         }
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
@@ -26,38 +41,40 @@
 
             if (activity.Text == "status")
             {
-                await context.PostAsync("Status window navigation");
+                context.Call(new StatusDialog(), ResumeAferStatusDialog);
             }
             else if (activity.Text == "sub")
             {
-                context.Call(new ConfirmationDialog(), this.ResumeAferConfirmationDialog);
-            }
-            else if (activity.Text == "unsubscribe")
-            {
-                await context.PostAsync("Unsubscribe window navigation");
+                context.Call(new SubscriptionDialog(), ResumeAferSubscriptionDialog);
             }
             else
             {
-                await context.PostAsync("I don't understand you.");
-                context.Wait(this.MessageReceivedAsync);
+                await context.PostAsync("I don't understand you. Currently you can type status to check it or subscribe to manage your subscriptions");
+                context.Wait(MessageReceivedAsync);
             }
         }
 
-        private async Task ResumeAferConfirmationDialog(IDialogContext context, IAwaitable<bool> result)
+        private async Task ResumeAferSubscriptionDialog(IDialogContext context, IAwaitable<bool> result)
         {
-            var resultFromNewOrder = await result;
+            var resultFromSubscriptionsDialog = await result;
 
-            if (resultFromNewOrder)
+            if (resultFromSubscriptionsDialog)
             {
-                await context.PostAsync("Ok now let's see what you want to receive.");
+                await context.PostAsync("Ok now you will receive the notifications you subscribed to.");
             }
             else
             {
-                await context.PostAsync("Ok, no spam for you.");
+                await context.PostAsync("Ok, no spam for you. You are unsubscribed from all notifications.");
             }
 
-            // Again, wait for the next message from the user.
-            context.Wait(this.MessageReceivedAsync);
+            context.Wait(MessageReceivedAsync);
+        }
+
+        private async Task ResumeAferStatusDialog(IDialogContext context, IAwaitable<bool> result)
+        {
+            var resultFromStatus = await result;
+
+            context.Wait(MessageReceivedAsync);
         }
     }
 }
