@@ -184,7 +184,6 @@
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\ConfirmationDialog.cs" />
     <Compile Include="Dialogs\GreetDialog.cs" />
-    <Compile Include="Dialogs\ProactiveDialog1.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

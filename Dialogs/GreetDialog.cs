@@ -12,6 +12,11 @@
     {
         public async Task StartAsync(IDialogContext context)
         {
+            // Greet the user
+            await context.PostAsync($"Hello {context.Activity.From.Name}. This is the first time we meet.");
+            await context.PostAsync($"My aim is to provide you some live information for the services you subscribe to.");
+            await context.PostAsync($"Type subscribe to start the subscription process.");
+
             context.Wait(this.MessageReceivedAsync);
         }
 
@@ -19,42 +24,27 @@
         {
             var activity = await result as Activity;
 
-            var reply = activity.CreateReply("Some notifications?");
-            reply.Attachments = new List<Attachment>
+            if (activity.Text == "status")
             {
-                new HeroCard()
-                {
-                    Title = "I'm a hero card",
-                    Subtitle = "Wikipedia Page",
-                    Buttons = new List<CardAction>
-                    {
-                        new CardAction()
-                        {
-                            Value = @"hoi",
-                            Type = "openUrl",
-                            Title = "WikiPedia Page"
-                        }
-                    }
-                }.ToAttachment()
-            };
-
-            await context.PostAsync(reply);
-            context.Wait(this.MessageReceivedAsync);
-
-            //var reply = activity.CreateReply($"Hello {activity.From.Name}. This is the first time we meet.");
-            //reply.Type = ActivityTypes.Message;
-            //reply.TextFormat = TextFormatTypes.Plain;
-
-            // return our reply to the user
-            //await context.PostAsync(reply);
-
-            //context.Call(new ConfirmationDialog(), this.ResumeAferConfirmationDialog);
+                await context.PostAsync("Status window navigation");
+            }
+            else if (activity.Text == "subscribe")
+            {
+                context.Call(new ConfirmationDialog(), this.ResumeAferConfirmationDialog);
+            }
+            else if (activity.Text == "unsubscribe")
+            {
+                await context.PostAsync("Unsubscribe window navigation");
+            }
+            else
+            {
+                await context.PostAsync("I don't understand you.");
+                context.Wait(this.MessageReceivedAsync);
+            }
         }
 
         private async Task ResumeAferConfirmationDialog(IDialogContext context, IAwaitable<bool> result)
         {
-            // Store the value that NewOrderDialog returned. 
-            // (At this point, new order dialog has finished and returned some value to use within the root dialog.)
             var resultFromNewOrder = await result;
 
             if (resultFromNewOrder)
