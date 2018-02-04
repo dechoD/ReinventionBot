@@ -28,7 +28,7 @@
             {
                 await context.PostAsync("Status window navigation");
             }
-            else if (activity.Text == "subscribe")
+            else if (activity.Text == "sub")
             {
                 context.Call(new ConfirmationDialog(), this.ResumeAferConfirmationDialog);
             }
