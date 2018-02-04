@@ -49,7 +49,8 @@
             }
             else
             {
-                await context.PostAsync("I don't understand you. Currently you can type status to check it or subscribe to manage your subscriptions");
+                await context.PostAsync("Ok. I don't understand you.");
+                await context.PostAsync("Currently you can type status to check it or subscribe to manage your subscriptions");
                 context.Wait(MessageReceivedAsync);
             }
         }
