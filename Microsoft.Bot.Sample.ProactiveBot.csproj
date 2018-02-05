@@ -177,11 +177,15 @@
   <ItemGroup>
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Dialogs\GitConfirmDialog.cs" />
+    <Compile Include="Dialogs\GitUserDialog.cs" />
     <Compile Include="Dialogs\SubscriptionDialog.cs" />
     <Compile Include="Dialogs\GreetDialog.cs" />
     <Compile Include="Dialogs\ManageSubscriptionsDialog.cs" />
@@ -189,9 +193,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\GitUser.cs" />
     <Compile Include="Models\TeamsUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AzureTableStorage.cs" />
+    <Compile Include="Utilities\HttpHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

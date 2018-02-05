@@ -17,8 +17,6 @@
             var userId = context.Activity.From.Id;
             var userExists = await AzureTableStorage.UserExists(userId);
 
-            await context.PostAsync(userExists.ToString());
-
             // Greet the user
             if (userExists)
             {
@@ -50,7 +48,7 @@
             else
             {
                 await context.PostAsync("Ok. I don't understand you.");
-                await context.PostAsync("Currently you can type status to check it or subscribe to manage your subscriptions");
+                await context.PostAsync("Currently you can type \"status\" or \"subscribe\" to check or manage your subscriptions");
                 context.Wait(MessageReceivedAsync);
             }
         }
@@ -61,7 +59,7 @@
 
             if (resultFromSubscriptionsDialog)
             {
-                await context.PostAsync("Ok now you will receive the notifications you subscribed to.");
+                await context.PostAsync("Ok now you will receive the notifications you subscribed to. Thanks.");
             }
             else
             {

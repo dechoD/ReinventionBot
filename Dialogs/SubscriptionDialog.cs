@@ -23,20 +23,7 @@
             await context.PostAsync("If you want to stop receiving all notifications type unsubscribe.");
             await context.PostAsync("You can always type done if you don't want to change anything.");
 
-            try
-            {
-                context.Wait(this.MessageReceivedAsync);
-            }
-            catch (Exception ex)
-            {
-                await context.PostAsync(ex.ToString());
-
-                while (ex.InnerException != null)
-                {
-                    ex = ex.InnerException;
-                    await context.PostAsync(ex.InnerException.ToString());
-                }
-            }
+            context.Wait(this.MessageReceivedAsync);            
         }
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
@@ -86,6 +73,7 @@
 
         private async Task ResumeAfterManageSubscriptionsDialog(IDialogContext context, IAwaitable<bool> result)
         {
+            var resultFromManageSubscriptionsDialog = await result;
             context.Done(true);
         }
     }
