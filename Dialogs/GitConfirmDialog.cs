@@ -37,9 +37,9 @@
                     new HeroCard()
                     {
                         Title = "Is this your account?",
+                        Subtitle = gitUsername,
                         Buttons = new List<CardAction>
                         {
-                            new CardAction() { Value = gitUsername, Type = ActionTypes.ImBack, Title = gitUsername },
                             new CardAction() { Value = "yes", Type = ActionTypes.ImBack, Title = "Yes" },
                             new CardAction() { Value = "no", Type = ActionTypes.ImBack, Title = "No" }
                         }

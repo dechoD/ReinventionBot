@@ -14,7 +14,7 @@
     {
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("I will need your jenkins username. Please type it, I will let you confirm it after that.");
+            await context.PostAsync("I will need your GitHub username. Please type it, I will let you confirm it after that.");
             context.Wait(MessageReceivedAsync);
         }
 
