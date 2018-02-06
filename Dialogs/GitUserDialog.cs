@@ -22,38 +22,47 @@
         {
             var activity = await result as Activity;
 
-            var response = await HttpHelper.GetGitUserInformation(activity.Text);
-
-            if (response == null)
+            if (activity.Text == "done" || activity.Text == "Done")
             {
-                await context.PostAsync("I was unable to find your github profile. Can you check it and type it again please.");
-                context.Wait(MessageReceivedAsync);
+                context.Done(false);
             }
             else
-            {
-                context.ConversationData.SetValue("gitname", response.Name);
-                context.ConversationData.SetValue("gitavatar", response.AvatarUrl);
+            { 
+                GitUser GitHubUserInfo = await HttpHelper.GetGitUserInformation(activity.Text);            
 
-                context.Call(new GitConfirmDialog(), ResumeAferConfirmDialog);
-            }            
+                if (GitHubUserInfo == null)
+                {
+                    await context.PostAsync("I was unable to find your github profile. Can you check it and type it again please.");
+                    await context.PostAsync("If you want to abort type \"done\".");
+                    context.Wait(MessageReceivedAsync);
+                }
+                else
+                {
+                    context.ConversationData.SetValue("gitname", GitHubUserInfo.Name);
+                    context.ConversationData.SetValue("gitavatar", GitHubUserInfo.AvatarUrl);
+
+                    context.Call(new GitConfirmDialog(), ResumeAferConfirmDialog);
+                }
+            }
         }
 
         private async Task ResumeAferConfirmDialog(IDialogContext context, IAwaitable<bool> result)
         {
-            var resultFromSubscriptionsDialog = await result;
+            var resultFromGitHubConfirmation = await result;
 
-            if (resultFromSubscriptionsDialog)
+            if (resultFromGitHubConfirmation)
             {
-                var user = await AzureTableStorage.GetUserById(context.Activity.From.Id);
-                user.GitUsername = context.ConversationData.GetValue<string>("gitname");
+                var tableUser = await AzureTableStorage.GetUserById(context.Activity.From.Id);
+                tableUser.GitUsername = context.ConversationData.GetValue<string>("gitname");
 
-                await AzureTableStorage.UpdateUser(user);
+                await AzureTableStorage.UpdateUser(tableUser);
 
                 context.Done(true);
             }
             else
             {
-                context.Done(false);
+                await context.PostAsync("You can try with a different username or just type \"done\".");
+                context.Wait(MessageReceivedAsync);
             }
         }
     }
