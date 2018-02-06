@@ -2,10 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
-    using global::ProactiveBot.Models;
-    using global::ProactiveBot.Utilities;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
 
@@ -28,20 +25,18 @@
 
                 reply.Attachments = new List<Attachment>
                 {
-                    new Attachment()
-                    {
-                        ContentUrl = gitAvatar,
-                        ContentType = "image/jpeg",
-                        Name = "avatar.jfif"
-                    },
-                    new HeroCard()
+                    new ThumbnailCard()
                     {
                         Title = "Is this your account?",
                         Subtitle = gitUsername,
+                        Images = new List<CardImage>
+                        {
+                            new CardImage(gitAvatar, "Git hub avatar")
+                        },
                         Buttons = new List<CardAction>
                         {
-                            new CardAction() { Value = "yes", Type = ActionTypes.ImBack, Title = "Yes" },
-                            new CardAction() { Value = "no", Type = ActionTypes.ImBack, Title = "No" }
+                            new CardAction() { Value = "yes", Type = ActionTypes.MessageBack, Title = "Yes" },
+                            new CardAction() { Value = "no", Type = ActionTypes.MessageBack, Title = "No" }
                         }
                     }.ToAttachment()
                 };
