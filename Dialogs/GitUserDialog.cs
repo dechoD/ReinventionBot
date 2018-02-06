@@ -24,10 +24,18 @@
 
             var response = await HttpHelper.GetGitUserInformation(activity.Text);
 
-            context.ConversationData.SetValue("gitname", response.Name);
-            context.ConversationData.SetValue("gitavatar", response.AvatarUrl);
+            if (response == null)
+            {
+                await context.PostAsync("I was unable to find your github profile. Can you check it and type it again please.");
+                context.Wait(MessageReceivedAsync);
+            }
+            else
+            {
+                context.ConversationData.SetValue("gitname", response.Name);
+                context.ConversationData.SetValue("gitavatar", response.AvatarUrl);
 
-            context.Call(new GitConfirmDialog(), ResumeAferConfirmDialog);
+                context.Call(new GitConfirmDialog(), ResumeAferConfirmDialog);
+            }            
         }
 
         private async Task ResumeAferConfirmDialog(IDialogContext context, IAwaitable<bool> result)

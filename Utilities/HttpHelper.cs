@@ -12,28 +12,35 @@
     {
         public static async Task<GitUser> GetGitUserInformation(string username)
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                var url = string.Format("https://api.github.com/users/{0}", username);
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.KeepAlive = false;
-                request.UserAgent = "Mozilla/5.0";
-
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-                using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(stream))
+                using (HttpClient client = new HttpClient())
                 {
-                    var res = await reader.ReadToEndAsync();
+                    var url = string.Format("https://api.github.com/users/{0}", username);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.KeepAlive = false;
+                    request.UserAgent = "Mozilla/5.0";
 
-                    JToken json = JObject.Parse(res);
-                    string avatarUrl = (string)json.SelectToken("avatar_url");
-                    string name = (string)json.SelectToken("name");
+                    request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
-                    return new GitUser(name, avatarUrl);
+                    using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+                    using (Stream stream = response.GetResponseStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        var res = await reader.ReadToEndAsync();
+
+                        JToken json = JObject.Parse(res);
+                        string avatarUrl = (string)json.SelectToken("avatar_url");
+                        string name = (string)json.SelectToken("name");
+
+                        return new GitUser(name, avatarUrl);
+                    }
                 }
             }
+            catch (System.Exception)
+            {
+                return null;
+            }            
         }
     }
 }
