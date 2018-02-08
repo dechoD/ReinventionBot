@@ -14,6 +14,11 @@
             var gitUsername = context.ConversationData.GetValue<string>("gitname");
             var gitAvatar= context.ConversationData.GetValue<string>("gitavatar");
 
+            if (gitUsername == string.Empty)
+            {
+                gitUsername = "Consider adding your name to your GitHub profile. It will make it easier for people to recognize you.";
+            }
+
             var reply = Activity.CreateMessageActivity();
             reply.ReplyToId = context.Activity.Id;
             reply.ChannelId = context.Activity.ChannelId;

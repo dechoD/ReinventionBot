@@ -31,7 +31,15 @@
 
                         JToken json = JObject.Parse(res);
                         string avatarUrl = (string)json.SelectToken("avatar_url");
-                        string name = (string)json.SelectToken("name");
+
+                        string name = string.Empty;
+                        try
+                        {
+                            name = (string)json.SelectToken("name");
+                        }
+                        catch (System.Exception)
+                        {
+                        }
 
                         return new GitUser(name, avatarUrl);
                     }
