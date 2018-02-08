@@ -198,6 +198,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AzureTableStorage.cs" />
     <Compile Include="Utilities\HttpHelper.cs" />
+    <Compile Include="Utilities\MessageComposer.cs" />
+    <Compile Include="Utilities\StringHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

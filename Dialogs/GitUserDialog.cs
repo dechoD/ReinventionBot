@@ -12,15 +12,18 @@
     {
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("I will need your GitHub username. Please type it, I will let you confirm it after that.");
+            await context.PostAsync("I will need your GitHub username.\n\n" + 
+                "Please type it, I will let you confirm it after that.");
+
             context.Wait(MessageReceivedAsync);
         }
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
+            var messageText = activity.Text;
 
-            if (activity.Text == "done" || activity.Text == "Done")
+            if (StringHelper.Equals(messageText, "done"))
             {
                 context.Done(false);
             }
@@ -79,7 +82,7 @@
             }
             else
             {
-                await context.PostAsync("You can try with a different username or just type \"done\".");
+                await context.PostAsync("You can try with a different username or just type *done*.");
                 context.Wait(MessageReceivedAsync);
             }
         }

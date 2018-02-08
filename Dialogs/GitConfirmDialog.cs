@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using global::ProactiveBot.Utilities;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
 
@@ -49,9 +50,23 @@
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
+            var messageText = activity.Text;
 
-            bool contextResult = activity.Text == "yes" ? true : false;
-            context.Done(contextResult);
+            if (StringHelper.Equals(messageText, "yes"))
+            {
+                context.Done(true);
+            }
+            else if (StringHelper.Equals(messageText, "no"))
+            {
+                context.Done(false);
+            }
+            else
+            {
+                await context.PostAsync("*Yes* or *no* please.\n\n" +
+                    "Is this your GitHub user?");
+
+                context.Wait(MessageReceivedAsync);
+            }
         }
     }
 }

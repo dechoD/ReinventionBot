@@ -18,10 +18,10 @@
         {
             var user = await AzureTableStorage.GetUserById(context.Activity.From.Id);
 
-            await context.PostAsync($"Ok, {user.Name}. Let's manage your notification subscriptions.");
-            await context.PostAsync("If you want to manage notifications type manage.");
-            await context.PostAsync("If you want to stop receiving all notifications type unsubscribe.");
-            await context.PostAsync("You can always type done if you don't want to change anything.");
+            await context.PostAsync($"Ok, {user.Name}. Let's manage your notification subscriptions.\n\n" +
+                "If you want to manage notifications type manage.\n\n" +
+                "If you want to stop receiving all notifications type unsubscribe.\n\n" +
+                "You can always type done if you don't want to change anything.");
 
             context.Wait(this.MessageReceivedAsync);            
         }
@@ -30,11 +30,12 @@
         {
             try
             {
-                var message = await result as Activity;
+                var activity = await result as Activity;
+                var messageText = activity.Text;
 
                 var user = await AzureTableStorage.GetUserById(context.Activity.From.Id);
 
-                if (message.Text == "manage")
+                if (StringHelper.Equals(messageText, "manage"))
                 {
                     if (user.Unsubscribed)
                     {
@@ -45,21 +46,21 @@
 
                     context.Call(new ManageSubscriptionsDialog(), this.ResumeAfterManageSubscriptionsDialog);
                 }
-                else if (message.Text == "unsubscribe")
+                else if (StringHelper.Equals(messageText, "unsubscribe"))
                 {
                     user.Unsubscribed = true;
                     await AzureTableStorage.UpdateUser(user);
 
                     context.Done(false);
                 }
-                else if (message.Text == "done")
+                else if (StringHelper.Equals(messageText, "done"))
                 {
                     context.Done(true);
                 }
                 else
                 {
-                    await context.PostAsync("It's either subscribe, unsubscribe or done. I do not understand anything else.");
-                    await context.PostAsync("Sooo, you want to receive notifications?");
+                    await context.PostAsync("It's either manage or unsubscribe. I do not understand anything else." +
+                        "Sooo, you want to receive notifications?");
 
                     context.Wait(this.MessageReceivedAsync);
                 }

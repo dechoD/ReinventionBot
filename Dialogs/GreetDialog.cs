@@ -4,8 +4,6 @@
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
     using System;
-    using System.Collections.Generic;
-    using System.Threading;
     using System.Threading.Tasks;
 
     [Serializable]
@@ -24,8 +22,8 @@
             }
             else
             {
-                await context.PostAsync($"Hello {context.Activity.From.Name}. This is the first time we meet.");
-                await context.PostAsync($"My aim is to provide you some live information for the services you subscribe to.");
+                await context.PostAsync($"Hello {context.Activity.From.Name}. This is the first time we meet.\n\n" +
+                    $"My aim is to provide you some live information for the services you subscribe to.");
 
                 await AzureTableStorage.InsertUser(context.Activity.From.Name, context.Activity.From.Id, context.Activity.Conversation.Id);
             }            
@@ -36,19 +34,21 @@
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
+            var messageText = activity.Text;
 
-            if (activity.Text == "status")
+            if (StringHelper.Equals(messageText, "status"))
             {
                 context.Call(new StatusDialog(), ResumeAferStatusDialog);
             }
-            else if (activity.Text == "subscribe")
+            else if (StringHelper.Equals(messageText, "subscribe"))
             {
                 context.Call(new SubscriptionDialog(), ResumeAferSubscriptionDialog);
             }
             else
             {
-                await context.PostAsync("Ok. I don't understand you.");
-                await context.PostAsync("Currently you can type \"status\" or \"subscribe\" to check or manage your subscriptions");
+                await context.PostAsync("Ok. I don't understand you.\n\n" +
+                    "Currently you can type *status* or *subscribe* to check or manage your subscriptions");
+
                 context.Wait(MessageReceivedAsync);
             }
         }
@@ -63,7 +63,8 @@
             }
             else
             {
-                await context.PostAsync("Ok, no spam for you. You are unsubscribed from all notifications.");
+                await context.PostAsync("Ok, no spam for you.\n\n" +
+                    "You are unsubscribed from all notifications.");
             }
 
             context.Wait(MessageReceivedAsync);
