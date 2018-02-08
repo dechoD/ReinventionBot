@@ -14,11 +14,6 @@
             var gitUsername = context.ConversationData.GetValue<string>("gitname");
             var gitAvatar= context.ConversationData.GetValue<string>("gitavatar");
 
-            if (gitUsername == string.Empty)
-            {
-                gitUsername = "Consider adding your name to your GitHub profile. It will make it easier for people to recognize you.";
-            }
-
             var reply = Activity.CreateMessageActivity();
             reply.ReplyToId = context.Activity.Id;
             reply.ChannelId = context.Activity.ChannelId;
@@ -37,11 +32,6 @@
                         Images = new List<CardImage>
                         {
                             new CardImage(gitAvatar, "Git hub avatar")
-                        },
-                        Buttons = new List<CardAction>
-                        {
-                            new CardAction() { Value = "yes", Type = ActionTypes.MessageBack, Title = "Yes" },
-                            new CardAction() { Value = "no", Type = ActionTypes.MessageBack, Title = "No" }
                         }
                     }.ToAttachment()
                 };

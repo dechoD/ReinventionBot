@@ -1,6 +1,5 @@
 ﻿namespace ProactiveBot.Utilities
 {
-    using Microsoft.Bot.Builder.Dialogs;
     using Newtonsoft.Json.Linq;
     using ProactiveBot.Models;
     using System.IO;
@@ -12,43 +11,36 @@
     {
         public static async Task<GitUser> GetGitUserInformation(string username)
         {
-            try
+            using (HttpClient client = new HttpClient())
             {
-                using (HttpClient client = new HttpClient())
+                var url = string.Format("https://api.github.com/users/{0}", username);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.KeepAlive = false;
+                request.UserAgent = "Mozilla/5.0";
+
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+                using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+                using (Stream stream = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(stream))
                 {
-                    var url = string.Format("https://api.github.com/users/{0}", username);
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.KeepAlive = false;
-                    request.UserAgent = "Mozilla/5.0";
+                    var res = await reader.ReadToEndAsync();
 
-                    request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                    JToken json = JObject.Parse(res);
+                    string avatarUrl = (string)json.SelectToken("avatar_url");
 
-                    using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
-                    using (Stream stream = response.GetResponseStream())
-                    using (StreamReader reader = new StreamReader(stream))
+                    string name = string.Empty;
+                    try
                     {
-                        var res = await reader.ReadToEndAsync();
-
-                        JToken json = JObject.Parse(res);
-                        string avatarUrl = (string)json.SelectToken("avatar_url");
-
-                        string name = string.Empty;
-                        try
-                        {
-                            name = (string)json.SelectToken("name");
-                        }
-                        catch (System.Exception)
-                        {
-                        }
-
-                        return new GitUser(name, avatarUrl);
+                        name = (string)json.SelectToken("name");
                     }
+                    catch (System.Exception)
+                    {
+                    }
+
+                    return new GitUser(name, avatarUrl);
                 }
-            }
-            catch (System.Exception)
-            {
-                return null;
-            }            
+            }  
         }
     }
 }

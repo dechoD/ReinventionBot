@@ -36,10 +36,30 @@
                 }
                 else
                 {
-                    context.ConversationData.SetValue("gitname", GitHubUserInfo.Name);
-                    context.ConversationData.SetValue("gitavatar", GitHubUserInfo.AvatarUrl);
+                    try
+                    {
+                        if (string.IsNullOrEmpty(GitHubUserInfo.Name))
+                        {
+                            GitHubUserInfo.Name = "Consider adding your name to your GitHub profile please.";
+                        }
 
-                    context.Call(new GitConfirmDialog(), ResumeAferConfirmDialog);
+                        context.ConversationData.SetValue("gitname", GitHubUserInfo.Name);
+                        context.ConversationData.SetValue("gitavatar", GitHubUserInfo.AvatarUrl);
+
+                        context.Call(new GitConfirmDialog(), ResumeAferConfirmDialog);
+                    }
+                    catch (Exception ex)
+                    {
+                        await context.PostAsync(ex.ToString());
+
+                        while (ex.InnerException != null)
+                        {
+                            ex = ex.InnerException;
+                            await context.PostAsync(ex.ToString());
+                        }
+
+                        throw new Exception();
+                    }                    
                 }
             }
         }
