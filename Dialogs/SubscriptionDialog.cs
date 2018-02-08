@@ -19,9 +19,9 @@
             var user = await AzureTableStorage.GetUserById(context.Activity.From.Id);
 
             await context.PostAsync($"Ok, {user.Name}. Let's manage your notification subscriptions.\n\n" +
-                "If you want to manage notifications type manage.\n\n" +
-                "If you want to stop receiving all notifications type unsubscribe.\n\n" +
-                "You can always type done if you don't want to change anything.");
+                "If you want to manage notifications type *manage*.\n\n" +
+                "If you want to stop receiving all notifications type *unsubscribe*.\n\n" +
+                "You can always type *done* if you don't want to change anything.");
 
             context.Wait(this.MessageReceivedAsync);            
         }
