@@ -87,7 +87,7 @@
 
                 user.SubscribedForJenkinsBuildResults = !user.SubscribedForJenkinsBuildResults;
                 await AzureTableStorage.UpdateUser(user);
-                await context.PostAsync(string.Format("Thanks {0}.", user.GitUsername) +
+                await context.PostAsync(string.Format("Thanks {0}.\n\n", user.GitUsername) +
                     string.Format("You are now {0}subscribed for your Jenkins build results.", !user.SubscribedForJenkinsBuildResults ? "un" : string.Empty));
 
                 context.Wait(MessageReceivedAsync);
