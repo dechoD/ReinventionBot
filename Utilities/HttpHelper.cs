@@ -27,6 +27,7 @@
                     var res = await reader.ReadToEndAsync();
 
                     JToken json = JObject.Parse(res);
+                    string login = (string)json.SelectToken("login");
                     string avatarUrl = (string)json.SelectToken("avatar_url");
 
                     string name = string.Empty;
@@ -38,7 +39,7 @@
                     {
                     }
 
-                    return new GitUser(name, avatarUrl);
+                    return new GitUser(login, name, avatarUrl);
                 }
             }  
         }

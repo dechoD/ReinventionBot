@@ -46,6 +46,7 @@
                             GitHubUserInfo.Name = "Consider adding your name to your GitHub profile please.";
                         }
 
+                        context.ConversationData.SetValue("gituser", GitHubUserInfo.UserName);
                         context.ConversationData.SetValue("gitname", GitHubUserInfo.Name);
                         context.ConversationData.SetValue("gitavatar", GitHubUserInfo.AvatarUrl);
 
@@ -74,7 +75,7 @@
             if (resultFromGitHubConfirmation)
             {
                 var tableUser = await AzureTableStorage.GetUserById(context.Activity.From.Id);
-                tableUser.GitUsername = context.ConversationData.GetValue<string>("gitname");
+                tableUser.GitUsername = context.ConversationData.GetValue<string>("gituser");
 
                 await AzureTableStorage.UpdateUser(tableUser);
 

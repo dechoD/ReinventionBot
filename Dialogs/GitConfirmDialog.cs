@@ -12,7 +12,8 @@
     {
         public async Task StartAsync(IDialogContext context)
         {
-            var gitUsername = context.ConversationData.GetValue<string>("gitname");
+            var gitUserName = context.ConversationData.GetValue<string>("gituser");
+            var gitName = context.ConversationData.GetValue<string>("gitname");
             var gitAvatar= context.ConversationData.GetValue<string>("gitavatar");
 
             var reply = Activity.CreateMessageActivity();
@@ -29,7 +30,8 @@
                     new ThumbnailCard()
                     {
                         Title = "Is this your account?",
-                        Subtitle = gitUsername,
+                        Subtitle = gitUserName,
+                        Text = gitName,
                         Images = new List<CardImage>
                         {
                             new CardImage(gitAvatar, "Git hub avatar")
