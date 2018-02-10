@@ -1,4 +1,4 @@
-﻿namespace ProactiveBot.Utilities
+﻿namespace ReinventionBot.Utilities
 {
     using System;
 

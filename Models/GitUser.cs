@@ -1,4 +1,4 @@
-﻿namespace ProactiveBot.Models
+﻿namespace ReinventionBot.Models
 {
     public class GitUser
     {

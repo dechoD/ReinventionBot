@@ -1,15 +1,11 @@
-﻿namespace Microsoft.Bot.Sample.ProactiveBot.Dialogs
+﻿namespace ReinventionBot.Dialogs
 {
-    using global::ProactiveBot.Models;
-    using global::ProactiveBot.Utilities;
+    using System;
+    using System.Threading.Tasks;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Table;
-    using System;
-    using System.Collections.Generic;
-    using System.Configuration;
-    using System.Threading.Tasks;
+
+    using ReinventionBot.Utilities;
 
     [Serializable]
     public class SubscriptionDialog : IDialog<bool>

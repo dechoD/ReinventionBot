@@ -1,20 +1,18 @@
-using System;
-using System.Configuration;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
-
-using Microsoft.Bot.Connector;
-using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Connector.Teams.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.Bot.Sample.ProactiveBot.Dialogs;
-using ProactiveBot.Utilities;
-
-namespace Microsoft.Bot.Sample.ProactiveBot
+namespace ReinventionBot
 {
+    using System;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+    using System.Web.Http.Description;
+
+    using Microsoft.Bot.Connector;
+    using Microsoft.Bot.Builder.Dialogs;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
+    using ReinventionBot.Dialogs;
+    using ReinventionBot.Utilities;
+
     public class MessagesController : ApiController
     {
         /// <summary>

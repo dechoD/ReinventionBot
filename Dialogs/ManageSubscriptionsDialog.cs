@@ -1,13 +1,10 @@
-﻿namespace Microsoft.Bot.Sample.ProactiveBot.Dialogs
+﻿namespace ReinventionBot.Dialogs
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
-    using global::ProactiveBot.Models;
-    using global::ProactiveBot.Utilities;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
+    using ReinventionBot.Utilities;
 
     [Serializable]
     public class ManageSubscriptionsDialog : IDialog<bool>

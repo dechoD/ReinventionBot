@@ -1,10 +1,11 @@
-﻿namespace Microsoft.Bot.Sample.ProactiveBot.Dialogs
+﻿namespace ReinventionBot.Dialogs
 {
-    using global::ProactiveBot.Utilities;
-    using Microsoft.Bot.Builder.Dialogs;
-    using Microsoft.Bot.Connector;
     using System;
     using System.Threading.Tasks;
+    using Microsoft.Bot.Builder.Dialogs;
+    using Microsoft.Bot.Connector;
+
+    using ReinventionBot.Utilities;
 
     [Serializable]
     public class GreetDialog : IDialog<object>

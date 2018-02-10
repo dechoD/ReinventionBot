@@ -1,11 +1,12 @@
-﻿namespace ProactiveBot.Utilities
+﻿namespace ReinventionBot.Utilities
 {
     using Newtonsoft.Json.Linq;
-    using ProactiveBot.Models;
     using System.IO;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
+
+    using ReinventionBot.Models;
 
     public static class HttpHelper
     {

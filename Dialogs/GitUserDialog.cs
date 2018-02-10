@@ -1,11 +1,12 @@
-﻿namespace Microsoft.Bot.Sample.ProactiveBot.Dialogs
+﻿namespace ReinventionBot.Dialogs
 {
     using System;
     using System.Threading.Tasks;
-    using global::ProactiveBot.Models;
-    using global::ProactiveBot.Utilities;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
+
+    using ReinventionBot.Models;
+    using ReinventionBot.Utilities;
 
     [Serializable]
     public class GitUserDialog : IDialog<bool>

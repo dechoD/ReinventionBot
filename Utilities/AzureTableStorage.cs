@@ -1,10 +1,11 @@
-﻿namespace ProactiveBot.Utilities
+﻿namespace ReinventionBot.Utilities
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Table;
-    using ProactiveBot.Models;
     using System.Configuration;
     using System.Threading.Tasks;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Table;
+
+    using ReinventionBot.Models;
 
     public static class AzureTableStorage
     {
