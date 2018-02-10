@@ -28,6 +28,7 @@
 
                     JToken json = JObject.Parse(res);
                     string login = (string)json.SelectToken("login");
+                    string userUrl = (string)json.SelectToken("html_url");
                     string avatarUrl = (string)json.SelectToken("avatar_url");
 
                     string name = string.Empty;
@@ -39,7 +40,7 @@
                     {
                     }
 
-                    return new GitUser(login, name, avatarUrl);
+                    return new GitUser(login, userUrl, name, avatarUrl);
                 }
             }  
         }

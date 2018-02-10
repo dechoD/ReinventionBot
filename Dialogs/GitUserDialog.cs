@@ -47,6 +47,7 @@
                         }
 
                         context.ConversationData.SetValue("gituser", GitHubUserInfo.UserName);
+                        context.ConversationData.SetValue("gituserurl", GitHubUserInfo.UserUrl);
                         context.ConversationData.SetValue("gitname", GitHubUserInfo.Name);
                         context.ConversationData.SetValue("gitavatar", GitHubUserInfo.AvatarUrl);
 

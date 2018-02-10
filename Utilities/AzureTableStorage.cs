@@ -102,5 +102,38 @@
                 table.Execute(update);
             }
         }
+
+        public static async Task<TeamsUser> GetUserByGitLogin(string gitLogin)
+        {
+            TeamsUser user = null;
+
+            // If you're running this bot locally, make sure you have this appSetting in your web.config
+            var storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AzureWebJobsStorage"]);
+
+            // Create or retrieve the table reference
+            var tableClient = storageAccount.CreateCloudTableClient();
+            var table = tableClient.GetTableReference("UsersTable");
+            await table.CreateIfNotExistsAsync();
+
+            TableQuery<TeamsUser> query = new TableQuery<TeamsUser>().Where(TableQuery.GenerateFilterCondition("GitUsername", QueryComparisons.Equal, gitLogin));
+            var result = table.ExecuteQuery(query);
+
+            var usersFound = 0;
+            if (result != null)
+            {
+                foreach (var entry in result)
+                {
+                    usersFound++;
+                    user = entry;
+                }
+            }
+
+            if (usersFound > 1)
+            {
+                throw new StorageException("More than one user found. This should not happen.");
+            }
+
+            return user;
+        }
     }
 }

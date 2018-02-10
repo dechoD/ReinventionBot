@@ -13,6 +13,7 @@
         public async Task StartAsync(IDialogContext context)
         {
             var gitUserName = context.ConversationData.GetValue<string>("gituser");
+            var gitUserUrl = context.ConversationData.GetValue<string>("gituserurl");
             var gitName = context.ConversationData.GetValue<string>("gitname");
             var gitAvatar= context.ConversationData.GetValue<string>("gitavatar");
 
@@ -32,10 +33,8 @@
                         Title = "Is this your account?",
                         Subtitle = gitUserName,
                         Text = gitName,
-                        Images = new List<CardImage>
-                        {
-                            new CardImage(gitAvatar, "Git hub avatar")
-                        }
+                        Images = new List<CardImage> { new CardImage(gitAvatar, "Git hub avatar") },
+                        Tap = new CardAction() { Type = "openUrl", Title = "Your GitHub profile", Value = gitUserUrl }
                     }.ToAttachment()
                 };
 
