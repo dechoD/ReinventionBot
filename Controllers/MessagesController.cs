@@ -41,10 +41,7 @@ namespace ReinventionBot
 
         private async Task HandleMessage(Activity activity)
         {
-            //await MessageComposer.SendMessageToUser("29:1Zg8q4E-_qtiNekcsFmWdbaih5zkCNlg4hbxMXwRFO2gbpaaLJTNDd-ifz5NYV30WV1NWvHL1lHPz-Wzg6wNt8A", "a:1FF_jJrHwxIBqzPMx4yLVjtoCVcD6o5Dkh7xqetx-rYDHSxmSmtPYMHsvC3W_qBkEVHVDOd9sewyfFYdYvGtW7kTKLQjUq7r3Cdhc5RcIqYGQbradXpl9i1mMAxPNroUD", "whatever");
-            var userName = activity.From.Name;
             var userId = activity.From.Id;
-            var messageText = activity.Text;
 
             if (userId == "MergeBot")
             {
