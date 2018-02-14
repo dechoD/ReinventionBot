@@ -1,5 +1,6 @@
 ﻿namespace ReinventionBot.Utilities
 {
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Threading.Tasks;
     using Microsoft.WindowsAzure.Storage;
@@ -135,6 +136,33 @@
             }
 
             return user;
+        }
+
+        public static async Task<TeamsUser[]> GetUsersBySubscription(string tableColumn)
+        {
+            List<TeamsUser> usersToReturn = new List<TeamsUser>();
+
+            // If you're running this bot locally, make sure you have this appSetting in your web.config
+            var storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AzureWebJobsStorage"]);
+
+            // Create or retrieve the table reference
+            var tableClient = storageAccount.CreateCloudTableClient();
+            var table = tableClient.GetTableReference("UsersTable");
+            await table.CreateIfNotExistsAsync();
+
+            TableQuery<TeamsUser> query = new TableQuery<TeamsUser>().Where(TableQuery.GenerateFilterConditionForBool(tableColumn, QueryComparisons.Equal, true));
+            var result = table.ExecuteQuery(query);
+
+            if (result != null)
+            {
+                foreach (var entry in result)
+                {
+                    var user = entry;
+                    usersToReturn.Add(user);
+                }
+            }
+
+            return usersToReturn.ToArray();
         }
     }
 }

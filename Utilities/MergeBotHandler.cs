@@ -1,8 +1,12 @@
 ﻿namespace ReinventionBot.Utilities
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Bot.Connector;
+
+    using Models;
+    using Newtonsoft.Json;
 
     public static class MergeBotHandler
     {
@@ -10,23 +14,30 @@
         {
             try
             {
-                var prs = activity.Properties["pullrequests"];
+                var pullRequestsProperty = activity.Properties["pullrequests"];
 
-                if (prs.HasValues)
+                if (pullRequestsProperty.HasValues)
                 {
-                    await MessageComposer.SendMessageToUser("29:1Zg8q4E-_qtiNekcsFmWdbaih5zkCNlg4hbxMXwRFO2gbpaaLJTNDd-ifz5NYV30WV1NWvHL1lHPz-Wzg6wNt8A", "a:1FF_jJrHwxIBqzPMx4yLVjtoCVcD6o5Dkh7xqetx-rYDHSxmSmtPYMHsvC3W_qBkEVHVDOd9sewyfFYdYvGtW7kTKLQjUq7r3Cdhc5RcIqYGQbradXpl9i1mMAxPNroUD", "Merge bot performed some work.");
+                    PullRequestInformation[] pullRequests = JsonConvert.DeserializeObject<PullRequestInformation[]>(pullRequestsProperty.ToString());
 
-
-                    foreach (var pr in prs)
+                    var mergedPr = pullRequests.Where(pr => pr.Merged).SingleOrDefault();
+                    if (mergedPr != null)
                     {
-                        var name = (string)pr.SelectToken("name");
-                        var author = (string)pr.SelectToken("author");
-                        var merged = (bool)pr.SelectToken("merged");
-                        var updated = (bool)pr.SelectToken("updated");
+                        var userSubscribedForMerges = await AzureTableStorage.GetUsersBySubscription(TableStorageSubscriptionColumns.SubscribedForRepositoryMerges);
+                        foreach (var user in userSubscribedForMerges)
+                        {
+                            await MessageComposer.SendMessageToUser(user.RowKey, user.ConversationId, $"Merged {mergedPr.Name} opened by {mergedPr.AuthorLogin}");
+                        }
+                    }
 
-                        string composedMessage = $"{name} form {author} is merged: {merged} and updated: {updated}";
-
-                        await MessageComposer.SendMessageToUser("29:1Zg8q4E-_qtiNekcsFmWdbaih5zkCNlg4hbxMXwRFO2gbpaaLJTNDd-ifz5NYV30WV1NWvHL1lHPz-Wzg6wNt8A", "a:1FF_jJrHwxIBqzPMx4yLVjtoCVcD6o5Dkh7xqetx-rYDHSxmSmtPYMHsvC3W_qBkEVHVDOd9sewyfFYdYvGtW7kTKLQjUq7r3Cdhc5RcIqYGQbradXpl9i1mMAxPNroUD", composedMessage);
+                    var updatedPr = pullRequests.Where(pr => pr.Updated).SingleOrDefault();
+                    if (updatedPr != null)
+                    {
+                        var userSubscribedForUpdates = await AzureTableStorage.GetUsersBySubscription(TableStorageSubscriptionColumns.SubscribedForRepositoryUpdates);
+                        foreach (var user in userSubscribedForUpdates)
+                        {
+                            await MessageComposer.SendMessageToUser(user.RowKey, user.ConversationId, $"Updated {updatedPr.Name} opened by {updatedPr.AuthorLogin}");
+                        }
                     }
                 }
                 else
