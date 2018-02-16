@@ -21,5 +21,9 @@
 
         [JsonProperty(PropertyName = "conflicting")]
         public bool Conflicting { get; set; }
+
+        public string Description { get; set; }
+
+        public string Title { get; set; }
     }
 }
