@@ -190,11 +190,15 @@
     <Compile Include="Dialogs\GreetDialog.cs" />
     <Compile Include="Dialogs\ManageSubscriptionsDialog.cs" />
     <Compile Include="Dialogs\StatusDialog.cs" />
+    <Compile Include="Extensions\ICollectionExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\GitUser.cs" />
+    <Compile Include="Models\MergedWorkItemEntity.cs" />
+    <Compile Include="Models\PullRequest.cs" />
     <Compile Include="Models\PullRequestInformation.cs" />
+    <Compile Include="Models\PullRequestStatus.cs" />
     <Compile Include="Models\TeamsUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AzureTableStorage.cs" />

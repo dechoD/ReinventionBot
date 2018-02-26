@@ -13,7 +13,7 @@
         public static async Task InsertUser(string name, string id, string conversationId)
         {
             // If you're running this bot locally, make sure you have this appSetting in your web.config
-            var storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AzureWebJobsStorage"]); 
+            var storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AzureWebJobsStorage"]);
 
             // Create or retrieve the table reference
             var tableClient = storageAccount.CreateCloudTableClient();
@@ -175,13 +175,12 @@
             var table = tableClient.GetTableReference("MergedWorkItemsTable");
             await table.CreateIfNotExistsAsync();
 
-            foreach (var id in workItemsIDs)
-            {
-                var entity = new TableEntity(id, id);
-                var createOperation = TableOperation.Insert(entity);
+            var ids = string.Join(" ", workItemsIDs);
+            var entity = new MergedWorkItemEntity(null, ids);
+            var createOperation = TableOperation.Insert(entity);
 
-                await table.ExecuteAsync(createOperation);
-            }
+            await table.ExecuteAsync(createOperation);
+
         }
     }
 }

@@ -9,6 +9,7 @@
 
     using Models;
     using Newtonsoft.Json;
+    using ReinventionBot.Extensions;
 
     public static class MergeBotHandler
     {
@@ -20,33 +21,37 @@
 
                 if (pullRequestsProperty.HasValues)
                 {
-                    PullRequestInformation[] pullRequests = JsonConvert.DeserializeObject<PullRequestInformation[]>(pullRequestsProperty.ToString());
+                    var pullRequestDatas = JsonConvert.DeserializeObject<PullRequestInformation[]>(pullRequestsProperty.ToString());
 
-                    var mergedPr = pullRequests.Where(pr => pr.Merged).FirstOrDefault();
-                    if (mergedPr != null)
+                    foreach (var pullRequestData in pullRequestDatas)
                     {
-                        var pattern = @"\s+#(\d{6})";
-                        var ids = new List<string>();
-
-                        ids.AddRange(GetMatchedItemsIds(mergedPr.Description, pattern));
-                        ids.AddRange(GetMatchedItemsIds(mergedPr.Title, pattern));
-
-                        await AzureTableStorage.AddMergedWorkItems(ids);
-
-                        var userSubscribedForMerges = await AzureTableStorage.GetUsersBySubscription(TableStorageSubscriptionColumns.SubscribedForRepositoryMerges);
-                        foreach (var user in userSubscribedForMerges)
+                        foreach (var pullRequest in pullRequestData.PullRequests)
                         {
-                            await MessageComposer.SendMessageToUser(user.RowKey, user.ConversationId, $"Merged {mergedPr.Name} opened by {mergedPr.AuthorLogin}");
-                        }
-                    }
+                            if (pullRequestData.Status == PullRequestStatus.Merged)
+                            {
+                                var pattern = @"\s+#(\d{6})";
+                                var ids = new HashSet<string>();
 
-                    var updatedPr = pullRequests.Where(pr => pr.Updated).FirstOrDefault();
-                    if (updatedPr != null)
-                    {
-                        var userSubscribedForUpdates = await AzureTableStorage.GetUsersBySubscription(TableStorageSubscriptionColumns.SubscribedForRepositoryUpdates);
-                        foreach (var user in userSubscribedForUpdates)
-                        {
-                            await MessageComposer.SendMessageToUser(user.RowKey, user.ConversationId, $"Updated {updatedPr.Name} opened by {updatedPr.AuthorLogin}");
+                                ids.AddRange(GetMatchedItemsIds(pullRequest.Description, pattern));
+                                ids.AddRange(GetMatchedItemsIds(pullRequest.Title, pattern));
+
+                                await AzureTableStorage.AddMergedWorkItems(ids);
+
+                                var userSubscribedForMerges = await AzureTableStorage.GetUsersBySubscription(TableStorageSubscriptionColumns.SubscribedForRepositoryMerges);
+                                foreach (var user in userSubscribedForMerges)
+                                {
+                                    await MessageComposer.SendMessageToUser(user.RowKey, user.ConversationId, $"Merged {pullRequest.Title} opened by {pullRequest.User.Username}");
+                                }
+                            }
+                            
+                            if (pullRequestData.Status == PullRequestStatus.Updated)
+                            {
+                                var userSubscribedForUpdates = await AzureTableStorage.GetUsersBySubscription(TableStorageSubscriptionColumns.SubscribedForRepositoryUpdates);
+                                foreach (var user in userSubscribedForUpdates)
+                                {
+                                    await MessageComposer.SendMessageToUser(user.RowKey, user.ConversationId, $"Updated {pullRequest} opened by {pullRequest.User.Username}");
+                                }
+                            }
                         }
                     }
                 }
