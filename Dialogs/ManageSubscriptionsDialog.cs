@@ -11,7 +11,7 @@
     {
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("To manage a notification setting type its name - *merges*, *updates*, *ci*, *jenkins*\n\n" + 
+            await context.PostAsync("To manage a notification setting type its name - *merges*, *updates*, *reviews*, *ci*, *jenkins*\n\n" + 
                 "To get notification setting status, type *status*. To finalize your selection enter *done*.");
             context.Wait(MessageReceivedAsync);
         }
@@ -48,6 +48,13 @@
                 await context.PostAsync(string.Format("You are now {0}subscribed for CI builds.", !user.SubscribedForCiBuildResults ? "un" : string.Empty));
                 context.Wait(MessageReceivedAsync);
             }
+            else if (StringHelper.Equals(messageText, "reviews"))
+            {
+                user.SubscribedForRequestedReviews = !user.SubscribedForRequestedReviews;
+                await AzureTableStorage.UpdateUser(user);
+                await context.PostAsync(string.Format("You are now {0}subscribed for review requests.", !user.SubscribedForRequestedReviews ? "un" : string.Empty));
+                context.Wait(MessageReceivedAsync);
+            }
             else if (StringHelper.Equals(messageText, "jenkins"))
             {
                 if (string.IsNullOrEmpty(user.GitUsername))
@@ -68,7 +75,7 @@
             }
             else
             {
-                await context.PostAsync("Possible commands are: status, merges, updates, ci, jenkins, done");
+                await context.PostAsync("Possible commands are: status, merges, reviews, updates, ci, jenkins, done");
                 context.Wait(MessageReceivedAsync);
             }
         }    
