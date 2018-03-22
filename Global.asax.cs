@@ -8,7 +8,7 @@ using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 using System.Net;
 
-namespace ReinventionBot
+namespace Microsoft.Bot.ReinventionBot
 {
     public class WebApiApplication : System.Web.HttpApplication
     {

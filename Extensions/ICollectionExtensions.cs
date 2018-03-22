@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ReinventionBot.Extensions
+namespace Microsoft.Bot.ReinventionBot.Extensions
 {
     internal static class ICollectionExtensions
     {

@@ -1,4 +1,4 @@
-﻿namespace ReinventionBot.Models
+﻿namespace Microsoft.Bot.ReinventionBot.Models
 {
     using Microsoft.WindowsAzure.Storage.Table;
 
@@ -19,6 +19,9 @@
         public string GitUsername { get; set; }
 
         public string ConversationId { get; set; }
+
+        // TODO: Think of a better way to handle subscriptions 
+        public bool SubscribedForRequestedReviews { get; set; }
 
         public bool SubscribedForRepositoryMerges { get; set; }
 

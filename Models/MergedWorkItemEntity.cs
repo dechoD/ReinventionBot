@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 
-namespace ReinventionBot.Models
+namespace Microsoft.Bot.ReinventionBot.Models
 {
     public class MergedWorkItemEntity : TableEntity
     {

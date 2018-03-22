@@ -1,4 +1,4 @@
-﻿namespace ReinventionBot.Utilities
+﻿namespace Microsoft.Bot.ReinventionBot.Utilities
 {
     using System.Collections.Generic;
     using System.Configuration;
@@ -6,7 +6,7 @@
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Table;
 
-    using ReinventionBot.Models;
+    using Microsoft.Bot.ReinventionBot.Models;
 
     public static class AzureTableStorage
     {
