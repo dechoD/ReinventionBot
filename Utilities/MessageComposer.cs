@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Bot.ReinventionBot.Utilities
+﻿namespace ReinventionBot.Utilities
 {
     using System;
     using System.Configuration;
@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Microsoft.Bot.Connector;
 
-    using Microsoft.Bot.ReinventionBot.Models;
+    using ReinventionBot.Models;
 
     public static class MessageComposer
     {
@@ -17,7 +17,7 @@
             sb.Append("# **Subscription status**\n\n");
             sb.Append("***\n\n");
 
-            if (!user.SubscribedForRepositoryMerges && !user.SubscribedForRepositoryUpdates && !user.SubscribedForJenkinsBuildResults && !user.SubscribedForCiBuildResults && !user.SubscribedForRequestedReviews)
+            if (!user.SubscribedForRepositoryMerges && !user.SubscribedForRepositoryUpdates && !user.SubscribedForJenkinsBuildResults && !user.SubscribedForCiBuildResults)
             {
                 sb.Append("You are not subscribed to any notifications.");
             }
@@ -25,7 +25,6 @@
             {
                 sb.Append(string.Format("* Iris repository merges by merge bot: {0}ubscribed\n\n", user.SubscribedForRepositoryMerges ? "S" : "Not s"));
                 sb.Append(string.Format("* Iris repository updates by merge bot: {0}ubscribed\n\n", user.SubscribedForRepositoryUpdates ? "S" : "Not s"));
-                sb.Append(string.Format("* Iris repository review requests : {0}ubscribed\n\n", user.SubscribedForRequestedReviews ? "S" : "Not s"));
                 sb.Append(string.Format("* Your Jenkins builds: {0}ubscribed\n\n", user.SubscribedForJenkinsBuildResults ? "S" : "Not s"));
                 sb.Append(string.Format("* CI builds: {0}ubscribed\n\n", user.SubscribedForCiBuildResults ? "S" : "Not s"));
             }            

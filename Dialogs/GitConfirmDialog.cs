@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Bot.ReinventionBot.Dialogs
+﻿namespace ReinventionBot.Dialogs
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,7 @@
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
 
-    using Microsoft.Bot.ReinventionBot.Utilities;
+    using ReinventionBot.Utilities;
 
     [Serializable]
     public class GitConfirmDialog : IDialog<bool>

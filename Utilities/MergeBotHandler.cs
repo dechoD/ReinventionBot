@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Bot.ReinventionBot.Utilities
+﻿namespace ReinventionBot.Utilities
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +9,7 @@
 
     using Models;
     using Newtonsoft.Json;
-    using Microsoft.Bot.ReinventionBot.Extensions;
+    using ReinventionBot.Extensions;
 
     public static class MergeBotHandler
     {
@@ -17,14 +17,11 @@
         {
             try
             {
-                var pullRequestsProperty = activity.Properties["data"];
+                var pullRequestsProperty = activity.Properties["pullrequests"];
 
                 if (pullRequestsProperty.HasValues)
                 {
                     var pullRequestDatas = JsonConvert.DeserializeObject<PullRequestInformation[]>(pullRequestsProperty.ToString());
-
-                    // getting the users here in order not to pull them from the db on every PR
-                    var userSubscribedForRequestedReviews = await AzureTableStorage.GetUsersBySubscription(TableStorageSubscriptionColumns.SubscribedForRequestedReviews);
 
                     foreach (var pullRequestData in pullRequestDatas)
                     {
@@ -53,20 +50,6 @@
                                 foreach (var user in userSubscribedForUpdates)
                                 {
                                     await MessageComposer.SendMessageToUser(user.RowKey, user.ConversationId, $"Updated {pullRequest} opened by {pullRequest.User.Username}");
-                                }
-                            }
-
-                            // TODO: send a message to the user in some interval, not on every bot run
-                            if (pullRequestData.Status == PullRequestStatus.RequiresReview)
-                            {
-                                foreach (var gitUser in pullRequest.RequestedReviewers)
-                                {
-                                    // check if the user is subscribed
-                                    var userSubscribedForReviewRequests = userSubscribedForRequestedReviews.FirstOrDefault(u => u.GitUsername == gitUser.Username);
-                                    if (userSubscribedForReviewRequests != null)
-                                    {
-                                        await MessageComposer.SendMessageToUser(userSubscribedForReviewRequests.RowKey, userSubscribedForReviewRequests.ConversationId, $"Your review is requested for {pullRequest.Title} opened by {pullRequest.User.Username}. {pullRequest.HtmlUrl}");
-                                    }
                                 }
                             }
                         }

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Bot.ReinventionBot.Models
+﻿namespace ReinventionBot.Models
 {
     public class GitUser
     {

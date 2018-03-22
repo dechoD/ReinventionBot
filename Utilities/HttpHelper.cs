@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Bot.ReinventionBot.Utilities
+﻿namespace ReinventionBot.Utilities
 {
     using Newtonsoft.Json.Linq;
     using System.IO;
@@ -6,7 +6,7 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    using Microsoft.Bot.ReinventionBot.Models;
+    using ReinventionBot.Models;
 
     public static class HttpHelper
     {

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Bot.ReinventionBot.Utilities
+﻿namespace ReinventionBot.Utilities
 {
     using System;
 

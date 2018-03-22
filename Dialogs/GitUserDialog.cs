@@ -1,12 +1,12 @@
-﻿namespace Microsoft.Bot.ReinventionBot.Dialogs
+﻿namespace ReinventionBot.Dialogs
 {
     using System;
     using System.Threading.Tasks;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
 
-    using Microsoft.Bot.ReinventionBot.Models;
-    using Microsoft.Bot.ReinventionBot.Utilities;
+    using ReinventionBot.Models;
+    using ReinventionBot.Utilities;
 
     [Serializable]
     public class GitUserDialog : IDialog<bool>

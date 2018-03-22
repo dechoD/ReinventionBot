@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Microsoft.Bot.ReinventionBot.Models
+namespace ReinventionBot.Models
 {
 
     public class PullRequestInformation
