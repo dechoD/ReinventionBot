@@ -20,6 +20,9 @@
 
         public string ConversationId { get; set; }
 
+        // TODO: Think of a better way to handle subscriptions 
+        public bool SubscribedForRequestedReviews { get; set; }
+
         public bool SubscribedForRepositoryMerges { get; set; }
 
         public bool SubscribedForRepositoryUpdates { get; set; }

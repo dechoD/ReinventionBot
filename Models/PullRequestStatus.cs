@@ -5,6 +5,7 @@
         None,
         Merged,
         Updated,
-        Conflicted
+        Conflicted,
+        RequiresReview
     }
 }

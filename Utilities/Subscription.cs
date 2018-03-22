@@ -7,6 +7,7 @@
         public const string ConversationId = "ConversationId";
         public const string SubscribedForRepositoryMerges = "SubscribedForRepositoryMerges";
         public const string SubscribedForRepositoryUpdates = "SubscribedForRepositoryUpdates";
+        public const string SubscribedForRequestedReviews = "SubscribedForRequestedReviews";
         public const string SubscribedForJenkinsBuildResults = "SubscribedForJenkinsBuildResults";
         public const string SubscribedForCiBuildResults = "SubscribedForCiBuildResults";
         public const string Unsubscribed = "Unsubscribed";
