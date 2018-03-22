@@ -1,4 +1,4 @@
-﻿namespace ReinventionBot.Models
+﻿namespace Microsoft.Bot.ReinventionBot.Models
 {
     using Microsoft.WindowsAzure.Storage.Table;
 

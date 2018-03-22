@@ -1,4 +1,4 @@
-namespace ReinventionBot
+namespace Microsoft.Bot.ReinventionBot
 {
     using System;
     using System.Threading.Tasks;
@@ -10,8 +10,8 @@ namespace ReinventionBot
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    using ReinventionBot.Dialogs;
-    using ReinventionBot.Utilities;
+    using Microsoft.Bot.ReinventionBot.Dialogs;
+    using Microsoft.Bot.ReinventionBot.Utilities;
 
     public class MessagesController : ApiController
     {

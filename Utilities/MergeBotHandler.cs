@@ -1,4 +1,4 @@
-﻿namespace ReinventionBot.Utilities
+﻿namespace Microsoft.Bot.ReinventionBot.Utilities
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +9,7 @@
 
     using Models;
     using Newtonsoft.Json;
-    using ReinventionBot.Extensions;
+    using Microsoft.Bot.ReinventionBot.Extensions;
 
     public static class MergeBotHandler
     {

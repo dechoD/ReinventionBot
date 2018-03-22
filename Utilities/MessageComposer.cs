@@ -1,4 +1,4 @@
-﻿namespace ReinventionBot.Utilities
+﻿namespace Microsoft.Bot.ReinventionBot.Utilities
 {
     using System;
     using System.Configuration;
@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Microsoft.Bot.Connector;
 
-    using ReinventionBot.Models;
+    using Microsoft.Bot.ReinventionBot.Models;
 
     public static class MessageComposer
     {

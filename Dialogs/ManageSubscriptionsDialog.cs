@@ -1,10 +1,10 @@
-﻿namespace ReinventionBot.Dialogs
+﻿namespace Microsoft.Bot.ReinventionBot.Dialogs
 {
     using System;
     using System.Threading.Tasks;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
-    using ReinventionBot.Utilities;
+    using Microsoft.Bot.ReinventionBot.Utilities;
 
     [Serializable]
     public class ManageSubscriptionsDialog : IDialog<bool>

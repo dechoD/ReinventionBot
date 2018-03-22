@@ -1,4 +1,4 @@
-namespace ReinventionBot
+namespace Microsoft.Bot.ReinventionBot
 {
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
